@@ -18,7 +18,7 @@ private:
 	opendnp3::CommandStatus validateCROB(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 		
 	int mgioReadInput(void);
-	bool isSwitchOn(int data, int num);
+	bool isRelayOn(int data, int num);
 	bool writeCircuitStatus(uint8_t index, bool value);
 	void microGridInit(void);
 	
@@ -30,6 +30,11 @@ private:
 	~MicroGridIOHandler(){};
 	
 	void readMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
+	
+	// test functions
+	void microgridIOHandler::mgioReadInputTest();
+	void microgridIOHandler::isRelayOnTest()
+	void microgridIOHandler::writeCircuitStatusTest()
 	
 	// not quite sure what these fxns do. I think we may need to adapt for analog reading of battery level
 	
