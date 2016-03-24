@@ -8,7 +8,8 @@
 #include <stdbool.h>
 #include <unistd.h>
 #include <string.h>
-
+#include <stdlib.h>
+#include <climits>
 using namespace opendnp3;
 using namespace asiodnp3;
 
@@ -36,18 +37,18 @@ using namespace asiodnp3;
 #define RELAY6 13
 
 
-void microgridIOHandler::doOperate(const ControlRelayOutputBlock& command, uint8_t index)
+void MicroGridIOHandler::DoOperate(const ControlRelayOutputBlock& command, uint8_t index)
 {
-	uint_8 value = (command.functionCode == ControlCode::LATCH_ON) ? 1 : 0;
+	uint8_t value = (command.functionCode == ControlCode::LATCH_ON) ? 1 : 0;
 	writeCircuitStatus(index, value);
 }
 
-CommandStatus microgridIOHandler::validateCROB(const ControlRelayOutputBlock& command, uint16_t index)
+CommandStatus MicroGridIOHandler::validateCROB(const ControlRelayOutputBlock& command, uint16_t index)
 {
 	switch(command.functionCode)
 	{
-		case(ControlCode::LATCH_ON)
-		case(ControlCode::LATCH_OFF)
+		case(ControlCode::LATCH_ON):
+		case(ControlCode::LATCH_OFF):
 			return CommandStatus::SUCCESS;
 		default:
 			return CommandStatus::NOT_SUPPORTED;
@@ -57,30 +58,39 @@ CommandStatus microgridIOHandler::validateCROB(const ControlRelayOutputBlock& co
 // read status of all relays, return integer with bits set to 1/on, 0/off_type
 // 0 is all off, 255 is all on
 
-uint8_t microgridIOHandler::mgioReadInput(void)
+uint8_t MicroGridIOHandler::mgioReadInput()
 {
 	uint8_t mask = 0;
 	REP(i, RELAYMASTER, RELAY6 + 1)
 	{
 		mask = (1 << i);
-		switch_status |= (mask << i);		
+		switchStatus |= (mask << i);		
 	}
-	return switch_status;
+	return switchStatus;
 }
 
-string microgridIOHandler::mgioReadInputTest(void)
+char MicroGridIOHandler::mgioReadInputTest()
 {
 	printf("microgridIOHandler::mgioReadInputTest. This will test if the function is reading the correct values for "
 			"each relay. Output is an 8-bit binary. For each digit, 1 is on, 0 is off.\n\n");
 	char buffer[7];
 	uint8_t num = mgioReadInput();
-	itoa(num, buffer, 2);
+	
+	for(uint8_t i = 0; i < (CHAR_BIT)*sizeof(uint8_t); i++)
+	{
+		uint8_t mask = 0;
+		mask = 1 << i;
+		if(num & mask)
+			buffer[i] = '1';
+		else
+			buffer[i] = '0';
+	}
 	printf("Circuit status %s\n", buffer);
-	return str(buffer);
+	return *buffer;
 }
 
 // parses value calculated by mgioReadInput, returns true if circuit num is hot
-bool microgridIOHandler::isRelayOn(uint8_t data, int num)
+bool MicroGridIOHandler::isRelayOn(uint8_t data, int num)
 {
 	int mask = 1 << num;
 	return ((data & mask) == 1);
@@ -88,24 +98,25 @@ bool microgridIOHandler::isRelayOn(uint8_t data, int num)
 
 // Test if function isRelayOn is returning correct boolean values. Checks relay status with mgioReadInputTest
 // Then displays t/f values returned from isRelayOn
-void microgridIOHandler::isRelayOnTest()
+void MicroGridIOHandler::isRelayOnTest()
 {
-	string status = mgioReadInputTest(void);
-	printf("Current system status: %s\n\n", status);
+	char status = mgioReadInputTest();
+	//uint8_t status = mgioReadInput();
+	printf("Current system status: %s\n\n", &status);
 	uint8_t data = mgioReadInput();
 	for(int i = 0; i < NUM_CIRCUITS; i++)
 	{
-		if(isRelayOn(data, i)
+		if(isRelayOn(data, i))
 		{
-			printf("Relay %0.0f is on\n\n", i);
+			printf("Relay %0.0f is on\n\n", (double) i);
 		}else{
-			printf("Relay %0.0f is off\n\n", i);
+			printf("Relay %0.0f is off\n\n", (double) i);
 		}
 	}
 }
 
 // turns each circuit on/off
-bool microgridIOHandler::writeCircuitStatus(uint8_t index, bool value)
+bool MicroGridIOHandler::writeCircuitStatus(uint8_t index, bool value)
 {
 	// check if index is valid
 	if(index <= NUM_CIRCUITS)
@@ -114,12 +125,12 @@ bool microgridIOHandler::writeCircuitStatus(uint8_t index, bool value)
 		delay(25);
 		return true;
 	}
-	fprintf('%0.0f is not a valid index\n', index);
+	printf("%0.0f is not a valid index\n", (double) index);
 	return false;
 }
 
 // test function for microgridIOHandler::writeCircuitStatus
-void microgridIOHandler::writeCircuitStatusTest()
+void MicroGridIOHandler::writeCircuitStatusTest()
 {
 	printf("microgridIOHandler::writeCircuitStatusTest. This test cycles each circuit on\n "
 				"then off in .5 second intervals, then tests the function\'s bounds\n "
@@ -143,12 +154,12 @@ void microgridIOHandler::writeCircuitStatusTest()
 	{
 		if(writeCircuitStatus(i, true))
 		{
-			fprintf('Floor %0.0f successfully activated\n', i);
+			printf("Floor %0.0f successfully activated\n", (double) i);
 			delay(500);
 		}
 		if(writeCircuitStatus(i, false))
 		{
-			fprintf('Floor %0.0f successfully deactivated\n', i);
+			printf("Floor %0.0f successfully deactivated\n", (double) i);
 			delay(500);
 		}
 	}
@@ -157,7 +168,7 @@ void microgridIOHandler::writeCircuitStatusTest()
 // initialize wiringPi status for microGrid
 // Switch monitoring pins set to INPUT
 // Relay control pins set to OUTPUT
-void microgridIOHandler::microgridInit(void)
+void MicroGridIOHandler::microgridInit(void)
 {
 	wiringPiSetup();
 	
@@ -172,12 +183,12 @@ void microgridIOHandler::microgridInit(void)
 	}
 }
 
-microgridIOHandler::microgridIOHandler()
+MicroGridIOHandler::MicroGridIOHandler()
 {
-	microgrid_init();
+	microgridInit();
 }
 
-void microgridIOHandler::readMeasurements(asiodnp3::IOutstation* pOutstation)
+void MicroGridIOHandler::ReadMeasurements(asiodnp3::IOutstation* pOutstation)
 {
 	const uint8_t ONLINE = 0x01;
 	uint8_t data = mgioReadInput(); // get relay values
@@ -190,15 +201,20 @@ void microgridIOHandler::readMeasurements(asiodnp3::IOutstation* pOutstation)
 	}
 }
 
-CommandStatus microgridIOHandler::Select(const ControlRelayOutputBlock& command, uint16_t index)
+CommandStatus MicroGridIOHandler::Select(const ControlRelayOutputBlock& command, uint16_t index)
 {
 	return validateCROB(command, index);
 }
 
-CommandStatus microgridIOHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
+CommandStatus MicroGridIOHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
 {
 	CommandStatus validation = validateCROB(command, index);
-	if(validation == CommandStatus::SUCCESS) doOperate(command, static_cast<char>(index));
+	if(validation == CommandStatus::SUCCESS) 
+	{
+		DoOperate(command, static_cast<char>(index));
+	}
 	return validation;
 }
+
+
 

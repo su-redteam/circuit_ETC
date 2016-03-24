@@ -2,7 +2,7 @@
 #define __MICROGRID_IO_HANDLER_H_
 
 #include <opendnp3/outstation/ICommandHandler.h>
-#include <asiodnp3/IOstation.h>
+#include <asiodnp3/IOutstation.h>
 
 class MicroGridIOHandler final : public opendnp3::ICommandHandler
 {
@@ -17,48 +17,50 @@ private:
 	
 	opendnp3::CommandStatus validateCROB(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 		
-	int mgioReadInput(void);
-	bool isRelayOn(int data, int num);
+	uint8_t mgioReadInput(void);
+	bool isRelayOn(uint8_t data, int num);
 	bool writeCircuitStatus(uint8_t index, bool value);
-	void microGridInit(void);
+	void microgridInit(void);
 	
-	int switchStatus = 0;
-	
+
 	public:
 	
+	uint8_t switchStatus = 0;	
+
 	MicroGridIOHandler();
 	~MicroGridIOHandler(){};
 	
-	void readMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
+	void ReadMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
 	
 	// test functions
-	void microgridIOHandler::mgioReadInputTest();
-	void microgridIOHandler::isRelayOnTest()
-	void microgridIOHandler::writeCircuitStatusTest()
+	char mgioReadInputTest();
+	void isRelayOnTest();
+	void writeCircuitStatusTest();
+
 	
 	// not quite sure what these fxns do. I think we may need to adapt for analog reading of battery level
 	
-	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
-	opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
+	virtual opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
+	virtual opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 	
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& command, uint16_t index)
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index)  
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }		
 		
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }		
 		
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat16& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat16& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }		
 		
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index) 
+	virtual opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index) 
 		override {return opendnp3::CommandStatus::NOT_SUPPORTED; }		
 		
 };

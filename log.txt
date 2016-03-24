@@ -1,0 +1,63 @@
+[ 50%] Building CXX object CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.o
+/home/pi/git/circuit_ETC/MicroGridRTU.cpp: In function ‘int main(int, char**)’:
+/home/pi/git/circuit_ETC/MicroGridRTU.cpp:22:18: error: cannot declare variable ‘ioHandler’ to be of abstract type ‘opendnp3::ICommandHandler’
+  ICommandHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
+                  ^
+In file included from /usr/local/include/asiodnp3/IChannel.h:32:0,
+                 from /usr/local/include/asiodnp3/DNP3Manager.h:31,
+                 from /home/pi/git/circuit_ETC/MicroGridRTU.cpp:2:
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:36:7: note:   because the following virtual functions are pure within ‘opendnp3::ICommandHandler’:
+ class ICommandHandler : public ITransactable
+       ^
+In file included from /usr/local/include/opendnp3/master/ISOEHandler.h:24:0,
+                 from /usr/local/include/asiodnp3/IChannel.h:28,
+                 from /usr/local/include/asiodnp3/DNP3Manager.h:31,
+                 from /home/pi/git/circuit_ETC/MicroGridRTU.cpp:2:
+/usr/local/include/opendnp3/app/ITransactable.h:41:15: note: 	virtual void opendnp3::ITransactable::Start()
+  virtual void Start() = 0;
+               ^
+/usr/local/include/opendnp3/app/ITransactable.h:42:15: note: 	virtual void opendnp3::ITransactable::End()
+  virtual void End() = 0;
+               ^
+In file included from /usr/local/include/asiodnp3/IChannel.h:32:0,
+                 from /usr/local/include/asiodnp3/DNP3Manager.h:31,
+                 from /home/pi/git/circuit_ETC/MicroGridRTU.cpp:2:
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:48:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Select(const opendnp3::ControlRelayOutputBlock&, uint16_t)
+  virtual CommandStatus Select(const ControlRelayOutputBlock& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:57:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Operate(const opendnp3::ControlRelayOutputBlock&, uint16_t)
+  virtual CommandStatus Operate(const ControlRelayOutputBlock& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:67:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Select(const opendnp3::AnalogOutputInt16&, uint16_t)
+  virtual CommandStatus Select(const AnalogOutputInt16& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:76:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Operate(const opendnp3::AnalogOutputInt16&, uint16_t)
+  virtual CommandStatus Operate(const AnalogOutputInt16& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:86:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Select(const opendnp3::AnalogOutputInt32&, uint16_t)
+  virtual CommandStatus Select(const AnalogOutputInt32& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:95:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Operate(const opendnp3::AnalogOutputInt32&, uint16_t)
+  virtual CommandStatus Operate(const AnalogOutputInt32& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:104:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Select(const opendnp3::AnalogOutputFloat32&, uint16_t)
+  virtual CommandStatus Select(const AnalogOutputFloat32& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:113:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Operate(const opendnp3::AnalogOutputFloat32&, uint16_t)
+  virtual CommandStatus Operate(const AnalogOutputFloat32& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:122:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Select(const opendnp3::AnalogOutputDouble64&, uint16_t)
+  virtual CommandStatus Select(const AnalogOutputDouble64& command, uint16_t index) = 0;
+                        ^
+/usr/local/include/opendnp3/outstation/ICommandHandler.h:131:24: note: 	virtual opendnp3::CommandStatus opendnp3::ICommandHandler::Operate(const opendnp3::AnalogOutputDouble64&, uint16_t)
+  virtual CommandStatus Operate(const AnalogOutputDouble64& command, uint16_t index) = 0;
+                        ^
+/home/pi/git/circuit_ETC/MicroGridRTU.cpp:40:13: error: ‘class opendnp3::ICommandHandler’ has no member named ‘ReadMeasurements’
+   ioHandler.ReadMeasurements(outstation);
+             ^
+CMakeFiles/MicroGridRTU.dir/build.make:77: recipe for target 'CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.o' failed
+make[2]: *** [CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.o] Error 1
+CMakeFiles/Makefile2:60: recipe for target 'CMakeFiles/MicroGridRTU.dir/all' failed
+make[1]: *** [CMakeFiles/MicroGridRTU.dir/all] Error 2
+Makefile:72: recipe for target 'all' failed
+make: *** [all] Error 2

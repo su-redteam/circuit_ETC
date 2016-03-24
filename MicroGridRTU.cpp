@@ -4,8 +4,8 @@
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/LogLevels.h>
-
-#include <ICommandHandler.h>
+#include <opendnp3/outstation/ICommandHandler.h>
+//#include "ICommandHandler.h"
 
 #include "MicroGridIOHandler.h"
 
@@ -19,7 +19,7 @@ using namespace asiodnp3;
 
 int main(int argc, char* argv[])
 {
-	MicroGridIOHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
+	ICommandHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
 		
 	const uint32_t FILTERS = levels::NORMAL;
 	DNP3Manager dnp3(1);
@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 	outstation->Enable();
 
 	do {
-		ioHandler.read_measurements(outstation);
+		ioHandler.ReadMeasurements(outstation);
 		this_thread::sleep_for( chrono::milliseconds(100) );
 	}
 	while(true);

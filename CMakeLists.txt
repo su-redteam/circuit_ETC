@@ -13,5 +13,5 @@ set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 
 # ----- microgridrtu executable -----
-add_executable (microgridRTU MicroGridIOHandler.cpp MicroGridRTU.cpp)
+add_executable (MicroGridRTU MicroGridIOHandler.cpp MicroGridRTU.cpp)
 target_link_libraries (MicroGridRTU LINK_PUBLIC asiodnp3 opendnp3 asiopal openpal pthread wiringPi)

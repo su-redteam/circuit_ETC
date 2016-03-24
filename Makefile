@@ -39,10 +39,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/pi/pifacertu
+CMAKE_SOURCE_DIR = /home/pi/git/circuit_ETC
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/pi/pifacertu
+CMAKE_BINARY_DIR = /home/pi/git/circuit_ETC
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -69,9 +69,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/pifacertu/CMakeFiles /home/pi/pifacertu/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/git/circuit_ETC/CMakeFiles /home/pi/git/circuit_ETC/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/pifacertu/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/pi/git/circuit_ETC/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -99,65 +99,65 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named pifacertu
+# Target rules for targets named MicroGridRTU
 
 # Build rule for target.
-pifacertu: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 pifacertu
-.PHONY : pifacertu
+MicroGridRTU: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 MicroGridRTU
+.PHONY : MicroGridRTU
 
 # fast build rule for target.
-pifacertu/fast:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/build
-.PHONY : pifacertu/fast
+MicroGridRTU/fast:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/build
+.PHONY : MicroGridRTU/fast
 
-PifaceIOHandler.o: PifaceIOHandler.cpp.o
-.PHONY : PifaceIOHandler.o
-
-# target to build an object file
-PifaceIOHandler.cpp.o:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceIOHandler.cpp.o
-.PHONY : PifaceIOHandler.cpp.o
-
-PifaceIOHandler.i: PifaceIOHandler.cpp.i
-.PHONY : PifaceIOHandler.i
-
-# target to preprocess a source file
-PifaceIOHandler.cpp.i:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceIOHandler.cpp.i
-.PHONY : PifaceIOHandler.cpp.i
-
-PifaceIOHandler.s: PifaceIOHandler.cpp.s
-.PHONY : PifaceIOHandler.s
-
-# target to generate assembly for a file
-PifaceIOHandler.cpp.s:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceIOHandler.cpp.s
-.PHONY : PifaceIOHandler.cpp.s
-
-PifaceRTU.o: PifaceRTU.cpp.o
-.PHONY : PifaceRTU.o
+MicroGridIOHandler.o: MicroGridIOHandler.cpp.o
+.PHONY : MicroGridIOHandler.o
 
 # target to build an object file
-PifaceRTU.cpp.o:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceRTU.cpp.o
-.PHONY : PifaceRTU.cpp.o
+MicroGridIOHandler.cpp.o:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridIOHandler.cpp.o
+.PHONY : MicroGridIOHandler.cpp.o
 
-PifaceRTU.i: PifaceRTU.cpp.i
-.PHONY : PifaceRTU.i
+MicroGridIOHandler.i: MicroGridIOHandler.cpp.i
+.PHONY : MicroGridIOHandler.i
 
 # target to preprocess a source file
-PifaceRTU.cpp.i:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceRTU.cpp.i
-.PHONY : PifaceRTU.cpp.i
+MicroGridIOHandler.cpp.i:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridIOHandler.cpp.i
+.PHONY : MicroGridIOHandler.cpp.i
 
-PifaceRTU.s: PifaceRTU.cpp.s
-.PHONY : PifaceRTU.s
+MicroGridIOHandler.s: MicroGridIOHandler.cpp.s
+.PHONY : MicroGridIOHandler.s
 
 # target to generate assembly for a file
-PifaceRTU.cpp.s:
-	$(MAKE) -f CMakeFiles/pifacertu.dir/build.make CMakeFiles/pifacertu.dir/PifaceRTU.cpp.s
-.PHONY : PifaceRTU.cpp.s
+MicroGridIOHandler.cpp.s:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridIOHandler.cpp.s
+.PHONY : MicroGridIOHandler.cpp.s
+
+MicroGridRTU.o: MicroGridRTU.cpp.o
+.PHONY : MicroGridRTU.o
+
+# target to build an object file
+MicroGridRTU.cpp.o:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.o
+.PHONY : MicroGridRTU.cpp.o
+
+MicroGridRTU.i: MicroGridRTU.cpp.i
+.PHONY : MicroGridRTU.i
+
+# target to preprocess a source file
+MicroGridRTU.cpp.i:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.i
+.PHONY : MicroGridRTU.cpp.i
+
+MicroGridRTU.s: MicroGridRTU.cpp.s
+.PHONY : MicroGridRTU.s
+
+# target to generate assembly for a file
+MicroGridRTU.cpp.s:
+	$(MAKE) -f CMakeFiles/MicroGridRTU.dir/build.make CMakeFiles/MicroGridRTU.dir/MicroGridRTU.cpp.s
+.PHONY : MicroGridRTU.cpp.s
 
 # Help Target
 help:
@@ -165,15 +165,15 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... MicroGridRTU"
 	@echo "... edit_cache"
-	@echo "... pifacertu"
 	@echo "... rebuild_cache"
-	@echo "... PifaceIOHandler.o"
-	@echo "... PifaceIOHandler.i"
-	@echo "... PifaceIOHandler.s"
-	@echo "... PifaceRTU.o"
-	@echo "... PifaceRTU.i"
-	@echo "... PifaceRTU.s"
+	@echo "... MicroGridIOHandler.o"
+	@echo "... MicroGridIOHandler.i"
+	@echo "... MicroGridIOHandler.s"
+	@echo "... MicroGridRTU.o"
+	@echo "... MicroGridRTU.i"
+	@echo "... MicroGridRTU.s"
 .PHONY : help
 
 
