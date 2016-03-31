@@ -63,7 +63,7 @@ uint8_t MicroGridIOHandler::mgioReadInput()
 	uint8_t mask = 0;
 	REP(i, RELAYMASTER, RELAY6 + 1)
 	{
-		mask = (1 << i);
+		mask = (digitalRead(i) << i);
 		switchStatus |= (mask << i);		
 	}
 	return switchStatus;
@@ -76,7 +76,7 @@ char MicroGridIOHandler::mgioReadInputTest()
 	char buffer[7];
 	uint8_t num = mgioReadInput();
 	
-	for(uint8_t i = 0; i < (CHAR_BIT)*sizeof(uint8_t); i++)
+	REP(i, 0, (CHAR_BIT*sizeof(uint8_t))
 	{
 		uint8_t mask = 0;
 		mask = 1 << i;
@@ -100,9 +100,11 @@ bool MicroGridIOHandler::isRelayOn(uint8_t data, int num)
 // Then displays t/f values returned from isRelayOn
 void MicroGridIOHandler::isRelayOnTest()
 {
+	// print current system status to terminal. 
 	char status = mgioReadInputTest();
-	//uint8_t status = mgioReadInput();
 	printf("Current system status: %s\n\n", &status);
+	
+	// print status as read by isRelayOn
 	uint8_t data = mgioReadInput();
 	for(int i = 0; i < NUM_CIRCUITS; i++)
 	{
@@ -215,6 +217,3 @@ CommandStatus MicroGridIOHandler::Operate(const ControlRelayOutputBlock& command
 	}
 	return validation;
 }
-
-
-
