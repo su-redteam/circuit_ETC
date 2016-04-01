@@ -76,7 +76,7 @@ char MicroGridIOHandler::mgioReadInputTest()
 	char buffer[7];
 	uint8_t num = mgioReadInput();
 	
-	REP(i, 0, (CHAR_BIT*sizeof(uint8_t))
+	for(int i = 0; i < (CHAR_BIT*sizeof(uint8_t)); i ++)
 	{
 		uint8_t mask = 0;
 		mask = 1 << i;

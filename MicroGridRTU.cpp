@@ -19,7 +19,7 @@ using namespace asiodnp3;
 
 int main(int argc, char* argv[])
 {
-	ICommandHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
+	MicroGridIOHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
 		
 	const uint32_t FILTERS = levels::NORMAL;
 	DNP3Manager dnp3(1);
