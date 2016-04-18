@@ -2,6 +2,7 @@
 
 #include <asiodnp3/MeasUpdate.h>
 #include <iostream>
+#include <istream>
 #include <chrono>
 #include <wiringPi.h>
 #include <stdio.h>
@@ -10,8 +11,10 @@
 #include <string.h>
 #include <stdlib.h>
 #include <climits>
+
 using namespace opendnp3;
 using namespace asiodnp3;
+using namespace std;
 
 // better for loops
 #define REP(i,a,b)      for (int i = int(a); i < int(b); i++)
@@ -36,6 +39,8 @@ using namespace asiodnp3;
 #define RELAY5 12
 #define RELAY6 13
 
+#define ON false
+#define OFF true
 
 void MicroGridIOHandler::DoOperate(const ControlRelayOutputBlock& command, uint8_t index)
 {
@@ -61,7 +66,7 @@ CommandStatus MicroGridIOHandler::validateCROB(const ControlRelayOutputBlock& co
 uint8_t MicroGridIOHandler::mgioReadInput()
 {
 	uint8_t mask = 0;
-	REP(i, RELAYMASTER, RELAY6 + 1)
+	REP(i, FAULTMASTER, FAULT6 + 1)
 	{
 		mask = (digitalRead(i) << i);
 		switchStatus |= (mask << i);		
@@ -76,7 +81,7 @@ char MicroGridIOHandler::mgioReadInputTest()
 	char buffer[7];
 	uint8_t num = mgioReadInput();
 	
-	for(int i = 0; i < (CHAR_BIT*sizeof(uint8_t)); i ++)
+	for(uint8_t i = 0; i < (CHAR_BIT*sizeof(uint8_t)); i ++)
 	{
 		uint8_t mask = 0;
 		mask = 1 << i;
@@ -86,14 +91,16 @@ char MicroGridIOHandler::mgioReadInputTest()
 			buffer[i] = '0';
 	}
 	printf("Circuit status %s\n", buffer);
+	cout << "Press any key to continue" << endl << endl;
+	cin.get();
 	return *buffer;
 }
 
 // parses value calculated by mgioReadInput, returns true if circuit num is hot
-bool MicroGridIOHandler::isRelayOn(uint8_t data, int num)
+bool MicroGridIOHandler::isRelayOn(int num)
 {
-	int mask = 1 << num;
-	return ((data & mask) == 1);
+	//int mask = 1 << num;
+	return (digitalRead(num));
 }
 
 // Test if function isRelayOn is returning correct boolean values. Checks relay status with mgioReadInputTest
@@ -101,6 +108,8 @@ bool MicroGridIOHandler::isRelayOn(uint8_t data, int num)
 void MicroGridIOHandler::isRelayOnTest()
 {
 	// print current system status to terminal. 
+
+/*
 	char status = mgioReadInputTest();
 	printf("Current system status: %s\n\n", &status);
 	
@@ -115,6 +124,83 @@ void MicroGridIOHandler::isRelayOnTest()
 			printf("Relay %0.0f is off\n\n", (double) i);
 		}
 	}
+*/
+	// TEST OVERRIDE ON DETECTION. ALL CIRCUITS SHOULD BE ACTIVE.
+	cout << "isRelayOnTest\n\n";
+	cout << "This will test if active circuits are being read correctly\n";
+	cout << "Please set all switches to override \'on\'\n";
+	cout << "Press enter to continue\n\n";
+
+	REP(i, FAULTMASTER, FAULT6 + 1)
+	{
+		if(isRelayOn(i))
+		{
+			cout << "Circuit " << i << " is active\n";
+			cout << "Press enter to continue\n\n"; 
+			cin.get();
+		}else{
+			cout << "Error on circuit " << i << endl;
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}
+	}
+
+	// TEST OVERRIDE OFF DETECTION. ALL CIRCUITS SHOULD BE INACTIVE.	
+	cout << "This will test if inactive circuits are being read correctly\n";
+	cout << "Please set all switches to override \'off\'\n";
+	cout << "Press enter to continue\n\n";
+	cin.get();
+ 
+	REP(i, FAULTMASTER, FAULT6 + 1)
+	{
+		if(!isRelayOn(i))
+		{
+			cout << "Circuit " << i << " is inactive\n";
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}else{
+			cout << "Error on circuit " << i << endl;
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}
+	}
+
+	// TEST REMOTE CIRCUIT ACTIVATION. EACH CIRCUIT WILL CYCLE, DISPLAYING STATUS TO THE TERMINAL
+	cout << "This will test the ability of this program to write the correct status to each circuit\n";
+	cout << "Please set all switches to \'Remote\'\n";
+	cout << "Press enter to continue\n\n";
+	cin.get();
+	
+	REP(i, FAULTMASTER, FAULT6 + 1)
+	{
+		writeCircuitStatus(i, ON);
+		if(isRelayOn(i))
+		{
+			cout << "Circuit " << i << " is active\n";
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}else{
+			cout << "Error on circuit " << i << endl;
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}
+
+		writeCircuitStatus(i, OFF);
+		if(!isRelayOn(i))
+		{
+			cout << "Circuit " << i << " is inactive\n"; 
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}else{
+			cout << "Error on circuit " << i << endl;
+			cout << "Press enter to continue\n\n";
+			cin.get();
+		}
+	}
+	
+	cout << "\n\nTesting complete/n/n";
+	cout << "Press any key to continue" << endl << endl;
+	cin.get();
 }
 
 // turns each circuit on/off
@@ -154,17 +240,19 @@ void MicroGridIOHandler::writeCircuitStatusTest()
 				
 	for(int i = 0; i <= NUM_CIRCUITS; i++)
 	{
-		if(writeCircuitStatus(i, true))
+		if(writeCircuitStatus(i, false))
 		{
 			printf("Floor %0.0f successfully activated\n", (double) i);
 			delay(500);
 		}
-		if(writeCircuitStatus(i, false))
+		if(writeCircuitStatus(i, true))
 		{
 			printf("Floor %0.0f successfully deactivated\n", (double) i);
 			delay(500);
 		}
 	}
+	cout << "Press any key to continue" << endl << endl;
+	cin.get();
 }
 
 // initialize wiringPi status for microGrid
@@ -193,13 +281,13 @@ MicroGridIOHandler::MicroGridIOHandler()
 void MicroGridIOHandler::ReadMeasurements(asiodnp3::IOutstation* pOutstation)
 {
 	const uint8_t ONLINE = 0x01;
-	uint8_t data = mgioReadInput(); // get relay values
+//	uint8_t data = mgioReadInput(); // get relay values
 	
 	MeasUpdate tx(pOutstation);
 	
-	REP(i, 0, 7)
+	REP(i, FAULTMASTER, FAULT6 + 1)
 	{
-		tx.Update(Binary(isRelayOn(data, i), ONLINE), i);
+		tx.Update(Binary(digitalRead(i), ONLINE), i);
 	}
 }
 

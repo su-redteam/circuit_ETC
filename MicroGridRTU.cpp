@@ -20,7 +20,7 @@ using namespace asiodnp3;
 int main(int argc, char* argv[])
 {
 	MicroGridIOHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
-		
+/*		
 	const uint32_t FILTERS = levels::NORMAL;
 	DNP3Manager dnp3(1);
 	dnp3.AddLogSubscriber(&ConsoleLogger::Instance());
@@ -41,6 +41,12 @@ int main(int argc, char* argv[])
 		this_thread::sleep_for( chrono::milliseconds(100) );
 	}
 	while(true);
+*/
+
+	//char tester;
+//	ioHandler.mgioReadInputTest();
+	ioHandler.isRelayOnTest();
+//	ioHandler.writeCircuitStatusTest();
 
 	return 0;
 }

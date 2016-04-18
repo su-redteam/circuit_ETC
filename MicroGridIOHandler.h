@@ -18,7 +18,7 @@ private:
 	opendnp3::CommandStatus validateCROB(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 		
 	uint8_t mgioReadInput(void);
-	bool isRelayOn(uint8_t data, int num);
+	bool isRelayOn(int num);
 	bool writeCircuitStatus(uint8_t index, bool value);
 	void microgridInit(void);
 	
