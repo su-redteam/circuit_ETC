@@ -1,4 +1,5 @@
-
+#include <stdio.h>
+#include <iostream>
 #include <asiodnp3/DNP3Manager.h>
 #include <asiodnp3/ConsoleLogger.h>
 #include <opendnp3/outstation/OutstationStackConfig.h>
@@ -20,7 +21,7 @@ using namespace asiodnp3;
 int main(int argc, char* argv[])
 {
 	MicroGridIOHandler ioHandler; // handles control request, input polling, and measurement tracking/updates
-/*		
+
 	const uint32_t FILTERS = levels::NORMAL;
 	DNP3Manager dnp3(1);
 	dnp3.AddLogSubscriber(&ConsoleLogger::Instance());
@@ -28,7 +29,7 @@ int main(int argc, char* argv[])
 	auto channel =  dnp3.AddTCPServer("server", FILTERS, opendnp3::ChannelRetry::Default(), "0.0.0.0", 20000);
 
 	OutstationStackConfig stackConfig;
-	stackConfig.dbTemplate = DatabaseTemplate::BinaryOnly(4);
+	stackConfig.dbTemplate = DatabaseTemplate::BinaryOnly(7);
 	stackConfig.outstation.eventBufferConfig = EventBufferConfig::AllTypes(10);
 	stackConfig.outstation.params.allowUnsolicited = true;
 
@@ -38,15 +39,12 @@ int main(int argc, char* argv[])
 
 	do {
 		ioHandler.ReadMeasurements(outstation);
-		this_thread::sleep_for( chrono::milliseconds(100) );
+		this_thread::sleep_for( chrono::milliseconds(1000) );
 	}
 	while(true);
-*/
 
-	//char tester;
-//	ioHandler.mgioReadInputTest();
-	ioHandler.isRelayOnTest();
-//	ioHandler.writeCircuitStatusTest();
+
+//	ioHandler.isRelayOnTest();
 
 	return 0;
 }

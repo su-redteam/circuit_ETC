@@ -44,18 +44,23 @@ using namespace std;
 
 void MicroGridIOHandler::DoOperate(const ControlRelayOutputBlock& command, uint8_t index)
 {
+	cout << "We're in DoOperate\n\n";
+
 	uint8_t value = (command.functionCode == ControlCode::LATCH_ON) ? 1 : 0;
 	writeCircuitStatus(index, value);
 }
 
 CommandStatus MicroGridIOHandler::validateCROB(const ControlRelayOutputBlock& command, uint16_t index)
 {
+
 	switch(command.functionCode)
 	{
 		case(ControlCode::LATCH_ON):
 		case(ControlCode::LATCH_OFF):
+		cout << "returning SUCCESS";
 			return CommandStatus::SUCCESS;
 		default:
+		cout << "returning NOT_SUPPORTED";
 			return CommandStatus::NOT_SUPPORTED;
 	}
 }
@@ -91,12 +96,12 @@ void MicroGridIOHandler::isRelayOnTest()
 		}
 	}
 
-	// TEST OVERRIDE OFF DETECTION. ALL CIRCUITS SHOULD BE INACTIVE.	
+	// TEST OVERRIDE OFF DETECTION. ALL CIRCUITS SHOULD BE INACTIVE.
 	cout << "This will test if inactive circuits are being read correctly\n";
 	cout << "Please set all switches to override \'off\'\n";
 	cout << "Press enter to continue\n\n";
 	cin.get();
- 
+
 	REP(i, FAULTMASTER, FAULT6 + 1)
 	{
 		if(!isRelayOn(i))
@@ -116,7 +121,7 @@ void MicroGridIOHandler::isRelayOnTest()
 	cout << "Please set all switches to \'Remote\'\n";
 	cout << "Press enter to continue\n\n";
 	cin.get();
-	
+
 	REP(i, FAULTMASTER, FAULT6 + 1)
 	{
 		writeCircuitStatus(i, ON);
@@ -143,7 +148,7 @@ void MicroGridIOHandler::isRelayOnTest()
 			cin.get();
 		}
 	}
-	
+
 	cout << "\n\nTesting complete\n\n";
 	cout << "Press any key to continue" << endl << endl;
 	cin.get();
@@ -170,12 +175,12 @@ bool MicroGridIOHandler::writeCircuitStatus(uint8_t index, bool value)
 void MicroGridIOHandler::microgridInit(void)
 {
 	wiringPiSetup();
-	
+
 	REP(i, FAULTMASTER, NUM_CIRCUITS)
 	{
 		pinMode(i, INPUT);
 	}
-	
+
 	REP(i, RELAYMASTER, RELAYMASTER + NUM_CIRCUITS)
 	{
 		pinMode(i, OUTPUT);
@@ -192,9 +197,9 @@ void MicroGridIOHandler::ReadMeasurements(asiodnp3::IOutstation* pOutstation)
 {
 	const uint8_t ONLINE = 0x01;
 //	uint8_t data = mgioReadInput(); // get relay values
-	
+
 	MeasUpdate tx(pOutstation);
-	
+
 	REP(i, FAULTMASTER, FAULT6 + 1)
 	{
 		tx.Update(Binary(digitalRead(i), ONLINE), i);

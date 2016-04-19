@@ -1,8 +1,12 @@
 #ifndef __MICROGRID_IO_HANDLER_H_
 #define __MICROGRID_IO_HANDLER_H_
 
+#include <iostream>
+#include <stdio.h>
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <asiodnp3/IOutstation.h>
+
+using namespace std;
 
 class MicroGridIOHandler final : public opendnp3::ICommandHandler
 {
@@ -46,30 +50,38 @@ opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 //The Raspberry Pi RTU would output a pulse train representing "10" to specialized hardware. Then the hardware would set water level to 10ft, for example.
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16&
 									command, uint16_t index) override 
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; } 
+		{	cout << "Select Int16\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; } 
 		opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& command, uint16_t index)
 		override 
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; }
+		{	cout << "Operate Int16\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; }
 
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32&
 									command, uint16_t index) override 
-		{return	opendnp3::CommandStatus::NOT_SUPPORTED; } 
+		{	cout << "Select Int32\n\n";
+			return	opendnp3::CommandStatus::NOT_SUPPORTED; } 
 	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& command, uint16_t index) 
 		override 
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; }
+		{	cout << "Operate Int32\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; }
 
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32
 									&command, uint16_t index) 
-		{return	opendnp3::CommandStatus::NOT_SUPPORTED; } 
+		{	cout << "Select Float32\n\n";
+			return	opendnp3::CommandStatus::NOT_SUPPORTED; } 
 	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32 &command, uint16_t index)
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; }
+		{	cout << "Operate Float32\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; }
 
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64&
 									command, uint16_t index) override 
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; } 
+		{	cout << "Select Double64\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; } 
 	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& command, uint16_t index)
 		override 
-		{return opendnp3::CommandStatus::NOT_SUPPORTED; }	
+		{	cout << "Operate Double64\n\n";
+			return opendnp3::CommandStatus::NOT_SUPPORTED; }	
 };
 
 #endif
