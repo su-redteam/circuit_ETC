@@ -11,33 +11,28 @@ private:
 
 	void Start() override{}
 	void End() override{}
-	
+
 	void DoOperate(const opendnp3::ControlRelayOutputBlock& command, uint8_t index);
-	
-	
+
+
 	opendnp3::CommandStatus validateCROB(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
-		
-	uint8_t mgioReadInput(void);
+
+
 	bool isRelayOn(int num);
 	bool writeCircuitStatus(uint8_t index, bool value);
 	void microgridInit(void);
-	
+
 
 	public:
-	
-	uint8_t switchStatus = 0;	
 
 	MicroGridIOHandler();
 	~MicroGridIOHandler(){};
-	
-	void ReadMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
-	
-	// test functions
-	char mgioReadInputTest();
-	void isRelayOnTest();
-	void writeCircuitStatusTest();
 
-	
+	void ReadMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
+
+	// test functions
+	void isRelayOnTest();
+
 	//These two functions are to perform Relay Outputs, aka On/Off controls.
 opendnp3::CommandStatus Select(const
 opendnp3::ControlRelayOutputBlock& command, uint16_t index);
