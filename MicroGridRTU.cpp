@@ -6,6 +6,7 @@
 #include <opendnp3/link/ChannelRetry.h>
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/ICommandHandler.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 //#include "ICommandHandler.h"
 
 #include "MicroGridIOHandler.h"
@@ -36,8 +37,13 @@ int main(int argc, char* argv[])
 	auto outstation = channel->AddOutstation("outstation", ioHandler, DefaultOutstationApplication::Instance(), stackConfig);
 
 	outstation->Enable();
+	
+//	ControlRelayOutputBlock crob = new ControlRelayOutputBlock();
 
+//	uint16_t index = 4;
 	do {
+//		ioHandler.Operate(crob, index);
+
 		ioHandler.ReadMeasurements(outstation);
 		this_thread::sleep_for( chrono::milliseconds(1000) );
 	}

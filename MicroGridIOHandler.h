@@ -38,10 +38,10 @@ private:
 	void isRelayOnTest();
 
 	//These two functions are to perform Relay Outputs, aka On/Off controls.
-opendnp3::CommandStatus Select(const
-opendnp3::ControlRelayOutputBlock& command, uint16_t index);
-opendnp3::CommandStatus Operate(const
-opendnp3::ControlRelayOutputBlock& command, uint16_t index);
+	opendnp3::CommandStatus Select(const
+					opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
+	opendnp3::CommandStatus Operate(const
+					opendnp3::ControlRelayOutputBlock& command, uint16_t index) override final;
 
 //The following functions perform Analog Output, aka Setpoint controls.
 //All of these functions are stubbed out for now, and return a status of "NOT_SUPPORTED" if invoked.

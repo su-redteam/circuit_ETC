@@ -44,7 +44,7 @@ using namespace std;
 
 void MicroGridIOHandler::DoOperate(const ControlRelayOutputBlock& command, uint8_t index)
 {
-	cout << "We're in DoOperate\n\n";
+	cout << "\tMGIO DoOperate\n\n";
 
 	uint8_t value = (command.functionCode == ControlCode::LATCH_ON) ? 1 : 0;
 	writeCircuitStatus(index, value);
@@ -52,16 +52,23 @@ void MicroGridIOHandler::DoOperate(const ControlRelayOutputBlock& command, uint8
 
 CommandStatus MicroGridIOHandler::validateCROB(const ControlRelayOutputBlock& command, uint16_t index)
 {
+	cout << "\tMGIO validateCROB\n\t";
+	cout << ControlCodeToType(command.functionCode) << endl;
+	cout << command.rawCode << endl;
+	cout << command.count << endl;
+	cout << command.onTimeMS << endl;
+	cout << command.offTimeMS << endl;
 
-	switch(command.functionCode)
+	if(command.functionCode == ControlCode::LATCH_ON)
 	{
-		case(ControlCode::LATCH_ON):
-		case(ControlCode::LATCH_OFF):
-		cout << "returning SUCCESS";
-			return CommandStatus::SUCCESS;
-		default:
-		cout << "returning NOT_SUPPORTED";
-			return CommandStatus::NOT_SUPPORTED;
+		cout << "\treturning SUCCESS\n\n";
+		return CommandStatus::SUCCESS;
+	}else if(command.functionCode == ControlCode::LATCH_OFF){
+		cout << "\treturning SUCCESS\n\n";
+		return CommandStatus::SUCCESS;
+	}else{
+		cout << "\treturning NOT_SUPPORTED\n\n";
+		return CommandStatus::NOT_SUPPORTED;
 	}
 }
 
@@ -157,6 +164,8 @@ void MicroGridIOHandler::isRelayOnTest()
 // turns each circuit on/off
 bool MicroGridIOHandler::writeCircuitStatus(uint8_t index, bool value)
 {
+	cout << "\tMGIO writeCircuitStatus\n\n";
+
 	// check if index is valid
 	if(index <= NUM_CIRCUITS)
 	{
@@ -175,6 +184,8 @@ bool MicroGridIOHandler::writeCircuitStatus(uint8_t index, bool value)
 void MicroGridIOHandler::microgridInit(void)
 {
 	wiringPiSetup();
+
+	cout << "\tMGIO init\n\n";
 
 	REP(i, FAULTMASTER, NUM_CIRCUITS)
 	{
@@ -195,6 +206,8 @@ MicroGridIOHandler::MicroGridIOHandler()
 
 void MicroGridIOHandler::ReadMeasurements(asiodnp3::IOutstation* pOutstation)
 {
+	cout << "\tMGIO ReadMeasurements\n\n";
+
 	const uint8_t ONLINE = 0x01;
 //	uint8_t data = mgioReadInput(); // get relay values
 
@@ -208,11 +221,15 @@ void MicroGridIOHandler::ReadMeasurements(asiodnp3::IOutstation* pOutstation)
 
 CommandStatus MicroGridIOHandler::Select(const ControlRelayOutputBlock& command, uint16_t index)
 {
+	cout << "\tMGIO select\n\n";
+
 	return validateCROB(command, index);
 }
 
 CommandStatus MicroGridIOHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
 {
+	cout << "\tMGIO Operate\n\n";
+
 	CommandStatus validation = validateCROB(command, index);
 	if(validation == CommandStatus::SUCCESS) 
 	{
