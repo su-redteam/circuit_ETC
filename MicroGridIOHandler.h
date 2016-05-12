@@ -6,6 +6,12 @@
 #include <opendnp3/outstation/ICommandHandler.h>
 #include <asiodnp3/IOutstation.h>
 
+#define NUM_CIRCUITS 7
+
+#define ON false
+#define OFF true
+
+
 using namespace std;
 
 class MicroGridIOHandler final : public opendnp3::ICommandHandler
@@ -18,15 +24,18 @@ private:
 
 	void DoOperate(const opendnp3::ControlRelayOutputBlock& command, uint8_t index);
 
+	bool status[NUM_CIRCUITS] = {};
 
 	opendnp3::CommandStatus validateCROB(const opendnp3::ControlRelayOutputBlock& command, uint16_t index);
 
 
-	bool isRelayOn(int num);
-	bool writeCircuitStatus(uint8_t index, bool value);
+	bool isRelayOn(uint8_t index);
+	bool writeCircuitStatus(uint8_t index);
 	void microgridInit(void);
-
-
+	void setStatus(uint8_t index);
+	void post();
+	void cycleAll(int delayTime);
+	void allOff();
 	public:
 
 	MicroGridIOHandler();
@@ -34,8 +43,17 @@ private:
 
 	void ReadMeasurements(asiodnp3::IOutstation* pOutstation); // reads status of each switch and relay, updates ETC
 
+	bool getStatus(uint8_t index);
+	void checkShutdown();
+
+	int getSize(){
+		return( NUM_CIRCUITS );
+	}
+
 	// test functions
 	void isRelayOnTest();
+
+	void testSelect(uint16_t index);
 
 	//These two functions are to perform Relay Outputs, aka On/Off controls.
 	opendnp3::CommandStatus Select(const

@@ -37,13 +37,9 @@ int main(int argc, char* argv[])
 	auto outstation = channel->AddOutstation("outstation", ioHandler, DefaultOutstationApplication::Instance(), stackConfig);
 
 	outstation->Enable();
-	
-//	ControlRelayOutputBlock crob = new ControlRelayOutputBlock();
 
-//	uint16_t index = 4;
 	do {
-//		ioHandler.Operate(crob, index);
-
+		ioHandler.checkShutdown();
 		ioHandler.ReadMeasurements(outstation);
 		this_thread::sleep_for( chrono::milliseconds(1000) );
 	}
