@@ -324,7 +324,7 @@ CommandStatus MicroGridIOHandler::Select(const ControlRelayOutputBlock& command,
 	writeCircuitStatus( (uint8_t) index );
 	delay(25);
 
-	return CommandStatus::NOT_SUPPORTED;
+	return CommandStatus::SUCCESS;
 //	validateCROB is deprecated in this version
 //	return validateCROB(command, index);
 }
@@ -333,14 +333,14 @@ CommandStatus MicroGridIOHandler::Select(const ControlRelayOutputBlock& command,
 
 CommandStatus MicroGridIOHandler::Operate(const ControlRelayOutputBlock& command, uint16_t index)
 {
-	cout << "\tMGIO Operate\n\n";
-
+	/*cout << "\tMGIO Operate\n\n";
+	
 	CommandStatus validation = validateCROB(command, index);
 	if(validation == CommandStatus::SUCCESS) 
 	{
 		DoOperate(command, static_cast<char>(index));
-	}
-	return validation;
+	}*/
+	return CommandStatus::SUCCESS;
 }
 
 
